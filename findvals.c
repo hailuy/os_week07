@@ -1,0 +1,125 @@
+/*****************************************************
+* Skeleton Code for the lab exercise. DO NOT add any 
+* more printf statements other than those provided 
+* in this skeleton code. Otherwise, your output may 
+* not match with the desired output and you will be marked
+* down. Only modify the values printing with the given 
+* printf statements as appropriate. 
+*
+* Note: properly indent your code so it looks beautiful
+* to read. Also add BRIEF comments explaining your code. 
+* Poorly written code will be marked down.
+***************************************************/
+
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "utils.h"
+
+int main(int argc, char **argv)
+{
+  char *ptr= NULL;
+  float ref,tol = 0;
+ //refStr = tolStr = NULL;
+
+  struct tm *local;
+  time_t start, end;
+//printf("arg = %s %s %s %s",argv[1],argv[2],argv[3],argv[4]);
+  //Add code to read arguments, in ANY order i.e. -r can come before or after -t  
+  //const char s[2] = " ";
+	if(strcmp(argv[1],"-r") != 0)
+	{
+	    if(strcmp(argv[1],"-t") != 0)
+	    {
+	      exit(1);
+	    }
+	    else
+	    {
+		tol = strtof(argv[2],NULL);                
+		ref = strtof(argv[4],NULL);
+	      //scanf("%s",&tolStr);
+    //scanf("%s",null);
+        //scanf("%s",&refStr);
+	    }
+	}
+
+  else{
+      //refStr = strtof(str,s);
+      //scanf("%s",&refStr);
+      if(strcmp(argv[3],"-t") != 0){
+        exit(1);
+      }
+      else{
+        ref = strtof(argv[2],NULL);
+        tol = strtof(argv[4],NULL);
+        //strtof(str,s);
+        //tolStr = strtof(str,s);
+        //scanf("%s",null);
+        //scanf("%s",&tolStr);
+      }
+  }
+	
+  //Check if arguments were passed in correctly.
+  if (argc != 5 || ref == 0 || tol == 0)
+  {
+    fprintf(stderr, "Usage: %s -r ref -t tol\n", argv[0]);
+    exit(1);
+  }
+  else{
+   // printf("ref,tol = %f %f",ref,tol);
+  }
+  //Add code to note start time and date and then print it. 
+  //Right now printing just a default string
+
+  time(&start); // read and record clock
+  local = localtime(&start);
+  printf("# Start time and date: %s", asctime(local));
+
+  //char * tnd="Wed 15 Oct 2014 19:18:13 IST";
+  //printf("# Start time and date: %s", tnd );
+
+  // Add rest of the functionality. 
+	int x,k,m,n,i,j;
+        int count = 0;
+	scanf("%d", &i);
+	scanf("%d", &j);
+	float **arr = (float **)malloc(i * sizeof (float*));//sizeof(long int)
+	if (arr == 0)
+	{
+	  fprintf(stderr, "arr Couldn't alocate sufficient space.\n");
+	  exit(1);
+	}
+
+	for(k = 0;k < i;k++)
+	{
+	  float* row = (float *) malloc(j * sizeof(float));
+	  if (row == 0)
+	  {
+	  fprintf(stderr, "row Couldn't alocate sufficient row space.\n");
+	  exit(1);
+	  }
+	  arr[k] = row;          
+	}
+	for(m = 0;m < i;m++)
+	{
+	  for(n = 0;n < j;n++)
+	  {
+	    scanf("%f", &arr[m][n]);
+	    if(approxEqual(arr[m][n],ref,tol))
+	    {
+	      fprintf(stdout, "r=%d, c=%d: %.6f\n", m, n, arr[m][n]);
+	      count++;
+	    }
+	  }
+	}
+	fprintf(stdout, "Found %d approximate matches.\n", count);
+
+  time(&end); // read and record clock
+  local = localtime(&end);
+  printf("# End time and date: %s", asctime(local)); 
+  //printf("# End time and date: %s", tnd);
+
+  return 0;
+}
